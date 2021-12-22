@@ -65,8 +65,8 @@ class SearchPageState extends State<SearchPage> {
               ),
             ),
             ElevatedButton.icon(
-              icon: Icon(Icons.search),
-              label: Text('Search'),
+              icon: const Icon(Icons.search),
+              label: const Text('Search'),
               onPressed: () {},
             )
           ],
