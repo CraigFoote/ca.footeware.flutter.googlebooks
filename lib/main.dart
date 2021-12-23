@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_books/custom_theme.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void main() {
@@ -50,6 +51,21 @@ class SearchPageState extends State<SearchPage> {
   final searchController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _loadPrefs();
+  }
+
+  void _loadPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      switchValue = (prefs.getBool('switchValue') ?? false);
+      widget.themeCallback(
+          switchValue ? CustomTheme.darkTheme : CustomTheme.lightTheme);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -95,9 +111,11 @@ class SearchPageState extends State<SearchPage> {
                   const Text('Dark Theme'),
                   Switch(
                     value: switchValue,
-                    onChanged: (value) {
+                    onChanged: (value) async {
+                      final prefs = await SharedPreferences.getInstance();
                       setState(() {
                         switchValue = value;
+                        prefs.setBool('switchValue', switchValue);
                         widget.themeCallback(value
                             ? CustomTheme.darkTheme
                             : CustomTheme.lightTheme);
@@ -192,7 +210,7 @@ class SearchResultsPage extends StatelessWidget {
     try {
       pageCount = volumeInfo['pageCount'];
     } catch (e) {
-      pageCount = 'Unknown Page Count';
+      pageCount = 'Unknown ';
     }
     String description;
     try {
