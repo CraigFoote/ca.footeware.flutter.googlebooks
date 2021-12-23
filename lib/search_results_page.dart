@@ -32,8 +32,7 @@ class SearchResultsPageState extends State<SearchResultsPage> {
             } else if (snapshot.data == null) {
               return const Text('No search results found.');
             } else {
-              var result = snapshot.data!;
-              return result;
+              return snapshot.data!;
             }
           },
         ),
@@ -55,28 +54,62 @@ Future<ListView> getSearchResults(String searchString) async {
     cards.add(createCard(items[i]));
   }
   return ListView.builder(
-      itemCount: cards.length,
+      itemCount: cards.length + 1,
       itemBuilder: (context, index) {
         if (index == 0) {
           num numResults = result['totalItems'];
           return Text(
-            'Results: $numResults',
+            'Results: $numResults (showing 40)',
             style: const TextStyle(
               fontWeight: FontWeight.w900,
             ),
+          );
+        } else if (index == 40) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: getPrevious(),
+                        icon: const Icon(Icons.arrow_left),
+                        label: const Text(
+                          'Previous',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: getNext(),
+                        icon: const Icon(Icons.arrow_right),
+                        label: const Text(
+                          'Next        ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+            ],
           );
         }
         return cards[index];
       });
 }
 
+getNext() {}
+
+getPrevious() {}
+
 Card createCard(item) {
   Book book = Book(item);
   return BookCard(book);
-}
-
-@override
-State<StatefulWidget> createState() {
-  // TODO: implement createState
-  throw UnimplementedError();
 }
