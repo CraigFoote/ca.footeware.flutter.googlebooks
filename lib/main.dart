@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_books/custom_theme.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const GoogleBooksApp());
@@ -199,6 +200,42 @@ class SearchResultsPage extends StatelessWidget {
     } catch (e) {
       description = 'Unknown description';
     }
+    String thumbnail;
+    try {
+      var imageLinks = volumeInfo['imageLinks'];
+      thumbnail = imageLinks['thumbnail'];
+    } catch (e) {
+      thumbnail = 'Thumbnail not found';
+    }
+    var isbns = '\n';
+    try {
+      var industryIdentifiers = volumeInfo['industryIdentifiers'];
+      for (var i = 0; i < industryIdentifiers.length; i++) {
+        var entry = industryIdentifiers[i];
+        var type = entry['type'];
+        var identifier = entry['identifier'];
+        isbns += type! + ': ' + identifier! + '\n';
+      }
+    } catch (e) {
+      isbns = 'ISBN not found';
+    }
+    String price;
+    try {
+      var saleInfo = item['saleInfo'];
+      var retailPrice = saleInfo['retailPrice'];
+      var amount = retailPrice['amount'];
+      var currencyCode = retailPrice['currencyCode'];
+      price = '\$' + amount.toString() + currencyCode;
+    } catch (e) {
+      price = 'Unknown Price';
+    }
+    var buyLink;
+    try {
+      var saleInfo = item['saleInfo'];
+      buyLink = saleInfo['buyLink'];
+    } catch (e) {
+      buyLink = null;
+    }
     return Card(
       elevation: 5,
       margin: const EdgeInsets.all(10.0),
@@ -224,6 +261,25 @@ class SearchResultsPage extends StatelessWidget {
                         fontStyle: FontStyle.italic,
                       ),
                     ),
+                    const Divider(
+                      thickness: 5,
+                      color: Colors.teal,
+                      height: 25,
+                      indent: 5,
+                      endIndent: 5,
+                    ),
+                    Text(
+                      publisher,
+                    ),
+                    Text(
+                      publishedDate,
+                    ),
+                    Text(
+                      pageCount.toString() + ' pages',
+                    ),
+                    Text(
+                      isbns,
+                    ),
                   ],
                 ),
                 Expanded(
@@ -231,14 +287,23 @@ class SearchResultsPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(
-                        publisher,
+                      Image(
+                        image: NetworkImage(thumbnail),
+                        alignment: Alignment.center,
                       ),
                       Text(
-                        publishedDate,
+                        price,
                       ),
-                      Text(
-                        pageCount.toString() + ' pages',
+                      InkWell(
+                        child: Text(
+                          buyLink == null ? '' : 'Buy',
+                          style: const TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                        onTap: () => _launchInBrowser(
+                          buyLink,
+                        ),
                       ),
                     ],
                   ),
@@ -261,5 +326,14 @@ class SearchResultsPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _launchInBrowser(String url) async {
+    if (!await launch(
+      url,
+      forceWebView: false,
+    )) {
+      throw 'Could not launch $url';
+    }
   }
 }
