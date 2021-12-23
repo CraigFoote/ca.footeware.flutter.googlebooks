@@ -57,52 +57,61 @@ Future<ListView> getSearchResults(String searchString) async {
       itemCount: cards.length + 1,
       itemBuilder: (context, index) {
         if (index == 0) {
-          num numResults = result['totalItems'];
-          return Text(
-            'Results: $numResults (showing 40)',
-            style: const TextStyle(
-              fontWeight: FontWeight.w900,
-            ),
-          );
+          return getNumResults(result);
         } else if (index == 40) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ElevatedButton.icon(
-                        onPressed: getPrevious(),
-                        icon: const Icon(Icons.arrow_left),
-                        label: const Text(
-                          'Previous',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      ElevatedButton.icon(
-                        onPressed: getNext(),
-                        icon: const Icon(Icons.arrow_right),
-                        label: const Text(
-                          'Next        ',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
-            ],
-          );
+          return getNavButtons();
         }
         return cards[index];
       });
+}
+
+Text getNumResults(Map<String, dynamic> result) {
+  num numResults = result['totalItems'];
+  return Text(
+    'Results: $numResults (showing 40)',
+    style: const TextStyle(
+      fontWeight: FontWeight.w900,
+    ),
+  );
+}
+
+Row getNavButtons() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ElevatedButton.icon(
+              onPressed: getPrevious(),
+              icon: const Icon(Icons.arrow_left),
+              label: const Text(
+                'Previous',
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            ElevatedButton.icon(
+              onPressed: getNext(),
+              icon: const Icon(Icons.arrow_right),
+              label: const Text(
+                'Next        ',
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
 }
 
 getNext() {}
