@@ -79,7 +79,7 @@ Widget getContent(Book book) {
                   ),
                   InkWell(
                     child: Text(
-                      book.buyLink == null ? '' : 'Buy',
+                      book.buyLink == '' ? '' : 'Buy',
                       style: const TextStyle(
                         color: Colors.blue,
                       ),

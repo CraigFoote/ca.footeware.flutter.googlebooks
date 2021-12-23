@@ -1,78 +1,102 @@
 class Book {
-  late String title;
-  late String authors;
-  late String publisher;
-  late String publishedDate;
-  late dynamic pageCount;
-  late String description;
-  late String thumbnail;
-  late dynamic isbns;
-  late String price;
-  late dynamic buyLink;
+  late Map<String, dynamic> volumeInfo;
+  Map<String, dynamic> parsedJson;
 
-  Book(Map<String, dynamic> parsedJson) {
-    Map<String, dynamic> volumeInfo = parsedJson['volumeInfo'];
+  Book(this.parsedJson) {
+    volumeInfo = parsedJson['volumeInfo'];
+  }
+
+  String get title {
     try {
-      title = volumeInfo['title'];
+      return volumeInfo['title'];
     } catch (e) {
-      title = 'Unknown Title';
+      return 'Unknown Title';
     }
+  }
+
+  String get authors {
     try {
-      authors = volumeInfo['authors'].join(', ');
+      return volumeInfo['authors'].join(', ');
     } catch (e) {
-      authors = 'Unknown Author(s)';
+      return 'Unknown Author(s)';
     }
+  }
+
+  String get publisher {
     try {
-      publisher = volumeInfo['publisher'];
+      return volumeInfo['publisher'];
     } catch (e) {
-      publisher = 'Unknown Publisher';
+      return 'Unknown Publisher';
     }
+  }
+
+  String get publishedDate {
     try {
-      publishedDate = volumeInfo['publishedDate'];
+      return volumeInfo['publishedDate'];
     } catch (e) {
-      publishedDate = 'Unknown Publish Date';
+      return 'Unknown Publish Date';
     }
+  }
+
+  String get pageCount {
     try {
-      pageCount = volumeInfo['pageCount'];
+      return volumeInfo['pageCount'];
     } catch (e) {
-      pageCount = 'Unknown ';
+      return 'Unknown ';
     }
+  }
+
+  String get description {
     try {
-      description = volumeInfo['description'];
+      return volumeInfo['description'];
     } catch (e) {
-      description = 'Unknown description';
+      return 'Unknown description';
     }
+  }
+
+  String get thumbnail {
     try {
       var imageLinks = volumeInfo['imageLinks'];
-      thumbnail = imageLinks['thumbnail'];
+      return imageLinks['thumbnail'];
     } catch (e) {
-      thumbnail = 'Thumbnail not found';
+      return 'Thumbnail not found';
     }
+  }
+
+  String get isbns {
     try {
       var industryIdentifiers = volumeInfo['industryIdentifiers'];
+      String concat = '';
       for (var i = 0; i < industryIdentifiers.length; i++) {
         var entry = industryIdentifiers[i];
         var type = entry['type'];
         var identifier = entry['identifier'];
-        isbns += type! + ': ' + identifier! + '\n';
+        concat += type! + ': ' + identifier! + '\n';
       }
+      return concat;
     } catch (e) {
-      isbns = 'ISBN not found';
+      return 'ISBN not found';
     }
+  }
+
+  String get price {
     try {
       var saleInfo = parsedJson['saleInfo'];
       var retailPrice = saleInfo['retailPrice'];
       var amount = retailPrice['amount'];
       var currencyCode = retailPrice['currencyCode'];
-      price = '\$' + amount.toString() + currencyCode;
+      return '\$' + amount.toString() + currencyCode;
     } catch (e) {
-      price = 'Unknown Price';
+      return 'Unknown Price';
     }
+  }
+
+  String get buyLink {
     try {
       var saleInfo = parsedJson['saleInfo'];
-      buyLink = saleInfo['buyLink'];
+      return saleInfo['buyLink'];
     } catch (e) {
-      buyLink = null;
+      return '';
     }
   }
 }
