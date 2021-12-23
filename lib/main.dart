@@ -193,50 +193,72 @@ class SearchResultsPage extends StatelessWidget {
     } catch (e) {
       pageCount = 'Unknown Page Count';
     }
+    String description;
+    try {
+      description = volumeInfo['description'];
+    } catch (e) {
+      description = 'Unknown description';
+    }
     return Card(
       elevation: 5,
       margin: const EdgeInsets.all(10.0),
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Row(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
               children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      authors,
+                      style: const TextStyle(
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  authors,
-                  style: const TextStyle(
-                    fontStyle: FontStyle.italic,
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        publisher,
+                      ),
+                      Text(
+                        publishedDate,
+                      ),
+                      Text(
+                        pageCount.toString() + ' pages',
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    publisher,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    description,
                   ),
-                  Text(
-                    publishedDate,
-                  ),
-                  Text(
-                    pageCount.toString() + ' pages',
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
