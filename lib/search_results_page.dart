@@ -47,7 +47,7 @@ Future<ListView> getSearchResults(String searchString) async {
       scheme: 'https',
       host: 'www.googleapis.com',
       path: 'books/v1/volumes',
-      query: 'q=' + searchString+'&maxResults=40');
+      query: 'q=' + searchString + '&maxResults=40');
   Map<String, dynamic> result = json.decode(await http.read(uri));
   var items = result['items'];
   List<Card> cards = [];
@@ -57,6 +57,15 @@ Future<ListView> getSearchResults(String searchString) async {
   return ListView.builder(
       itemCount: cards.length,
       itemBuilder: (context, index) {
+        if (index == 0) {
+          num numResults = result['totalItems'];
+          return Text(
+            'Results: $numResults',
+            style: const TextStyle(
+              fontWeight: FontWeight.w900,
+            ),
+          );
+        }
         return cards[index];
       });
 }
