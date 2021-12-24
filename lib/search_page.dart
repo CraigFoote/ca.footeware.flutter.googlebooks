@@ -61,7 +61,7 @@ class SearchPageState extends State<SearchPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {
-                    return SearchResultsPage(searchController.text);
+                    return SearchResultsPage(searchController.text, '0');
                   }),
                 );
               },

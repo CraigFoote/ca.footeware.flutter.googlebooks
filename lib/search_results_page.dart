@@ -7,8 +7,10 @@ import 'book.dart';
 import 'book_card.dart';
 
 class SearchResultsPage extends StatefulWidget {
-  const SearchResultsPage(this.searchString, {Key? key}) : super(key: key);
+  const SearchResultsPage(this.searchString, this.pageNumber, {Key? key})
+      : super(key: key);
   final String searchString;
+  final String pageNumber;
 
   @override
   State<StatefulWidget> createState() => SearchResultsPageState();
@@ -25,7 +27,7 @@ class SearchResultsPageState extends State<SearchResultsPage> {
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: FutureBuilder<ListView>(
-          future: getSearchResults(widget.searchString),
+          future: getSearchResults(widget.searchString, widget.pageNumber),
           builder: (BuildContext context, AsyncSnapshot<ListView> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
@@ -41,12 +43,18 @@ class SearchResultsPageState extends State<SearchResultsPage> {
   }
 }
 
-Future<ListView> getSearchResults(String searchString) async {
+Future<ListView> getSearchResults(
+    String searchString, String pageNumber) async {
   Uri uri = Uri(
       scheme: 'https',
       host: 'www.googleapis.com',
       path: 'books/v1/volumes',
-      query: 'q=' + searchString + '&maxResults=40');
+      query: 'q=' +
+          searchString +
+          '&maxResults=10&startIndex=' +
+          pageNumber +
+          '&key=AIzaSyAF1teX6POMtILJGAtLuEuwBRK2wYG1vXU');
+
   Map<String, dynamic> result = json.decode(await http.read(uri));
   var items = result['items'];
   List<Card> cards = [];
@@ -58,7 +66,7 @@ Future<ListView> getSearchResults(String searchString) async {
       itemBuilder: (context, index) {
         if (index == 0) {
           return getNumResults(result);
-        } else if (index == 40) {
+        } else if (index == cards.length) {
           return getNavButtons();
         }
         return cards[index];
