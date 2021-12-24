@@ -35,7 +35,7 @@ Widget getContent(Book book) {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
+                  SelectableText(
                     book.title,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
@@ -59,7 +59,7 @@ Widget getContent(Book book) {
                   Text(
                     book.pageCount.toString() + ' pages',
                   ),
-                  Text(
+                  SelectableText(
                     book.isbns,
                   ),
                 ],
@@ -79,7 +79,7 @@ Widget getContent(Book book) {
                       image: NetworkImage(book.thumbnail),
                       alignment: Alignment.center,
                     ),
-                  Text(
+                  SelectableText(
                     book.price,
                   ),
                   InkWell(
@@ -104,7 +104,7 @@ Widget getContent(Book book) {
         Row(
           children: [
             Expanded(
-              child: Text(
+              child: SelectableText(
                 book.description,
               ),
             ),
