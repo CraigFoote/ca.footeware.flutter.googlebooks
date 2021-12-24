@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'apikey.dart';
 import 'book.dart';
 import 'book_card.dart';
 
@@ -10,7 +11,7 @@ class SearchResultsPage extends StatefulWidget {
   const SearchResultsPage(this.searchString, this.pageNumber, {Key? key})
       : super(key: key);
   final String searchString;
-  final String pageNumber;
+  final num pageNumber;
 
   @override
   State<StatefulWidget> createState() => SearchResultsPageState();
@@ -44,16 +45,14 @@ class SearchResultsPageState extends State<SearchResultsPage> {
 }
 
 Future<ListView> getSearchResults(
-    String searchString, String pageNumber) async {
+    String searchString, num pageNumber) async {
   Uri uri = Uri(
       scheme: 'https',
       host: 'www.googleapis.com',
       path: 'books/v1/volumes',
       query: 'q=' +
           searchString +
-          '&maxResults=10&startIndex=' +
-          pageNumber +
-          '&key=AIzaSyAF1teX6POMtILJGAtLuEuwBRK2wYG1vXU');
+          '&maxResults=10&startIndex=$pageNumber&key='+apikey);
 
   Map<String, dynamic> result = json.decode(await http.read(uri));
   var items = result['items'];
@@ -67,7 +66,7 @@ Future<ListView> getSearchResults(
         if (index == 0) {
           return getNumResults(result);
         } else if (index == cards.length) {
-          return getNavButtons();
+          return getNavButtons(pageNumber);
         }
         return cards[index];
       });
@@ -83,7 +82,7 @@ Text getNumResults(Map<String, dynamic> result) {
   );
 }
 
-Row getNavButtons() {
+Row getNavButtons(num pageNumber) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -93,7 +92,7 @@ Row getNavButtons() {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ElevatedButton.icon(
-                onPressed: getPrevious(),
+                onPressed: getPrevious(pageNumber),
                 icon: const Icon(Icons.arrow_left),
                 label: const Text(
                   'Previous',
@@ -106,7 +105,7 @@ Row getNavButtons() {
                 width: 20,
               ),
               ElevatedButton.icon(
-                onPressed: getNext(),
+                onPressed: getNext(pageNumber),
                 icon: const Icon(Icons.arrow_right),
                 label: const Text(
                   'Next        ',
@@ -121,9 +120,13 @@ Row getNavButtons() {
   );
 }
 
-getNext() {}
+getNext(num pageNumber) {}
 
-getPrevious() {}
+getPrevious(num pageNumber) {
+  if (pageNumber > 0){
+
+  }
+}
 
 Card createCard(item) {
   Book book = Book(item);
