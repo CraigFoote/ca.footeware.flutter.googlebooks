@@ -3,6 +3,7 @@ import 'package:google_books/search_results_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'custom_theme.dart';
+import 'info_page.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage(this.title, this.themeCallback, {Key? key})
@@ -91,7 +92,32 @@ class SearchPageState extends State<SearchPage> {
                     },
                   ),
                 ],
-              )
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: GestureDetector(
+                      child: Builder(
+                        builder: (context) => const Icon(
+                          Icons.info,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const InfoPage(
+                                title: 'Info',
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

@@ -70,10 +70,15 @@ Widget getContent(Book book) {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Image(
-                    image: NetworkImage(book.thumbnail),
-                    alignment: Alignment.center,
-                  ),
+                  if (book.thumbnail == 'Thumbnail not found')
+                    Text(
+                      book.thumbnail,
+                    ),
+                  if (book.thumbnail != 'Thumbnail not found')
+                    Image(
+                      image: NetworkImage(book.thumbnail),
+                      alignment: Alignment.center,
+                    ),
                   Text(
                     book.price,
                   ),
