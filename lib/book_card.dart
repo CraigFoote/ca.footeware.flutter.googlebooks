@@ -3,14 +3,12 @@ import 'package:google_books/book.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BookCard extends Card {
-  BookCard(this.book, {Key? key})
+  BookCard(Book book, {Key? key})
       : super(
             key: key,
             elevation: 5,
             margin: const EdgeInsets.all(10.0),
             child: getContent(book));
-
-  final Book book;
 }
 
 Future<void> launchInBrowser(String url) async {
