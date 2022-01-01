@@ -16,8 +16,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class SearchPageState extends State<SearchPage> {
-  bool switchValue = false;
-  final searchController = TextEditingController();
+  bool _switchValue = false;
+  final _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -28,9 +28,9 @@ class SearchPageState extends State<SearchPage> {
   void _loadPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      switchValue = (prefs.getBool('switchValue') ?? false);
+      _switchValue = (prefs.getBool('switchValue') ?? false);
       widget.themeCallback(
-          switchValue ? CustomTheme.darkTheme : CustomTheme.lightTheme);
+          _switchValue ? CustomTheme.darkTheme : CustomTheme.lightTheme);
     });
   }
 
@@ -58,7 +58,7 @@ class SearchPageState extends State<SearchPage> {
             SizedBox(
               width: 500,
               child: TextField(
-                controller: searchController,
+                controller: _searchController,
                 autofocus: true,
                 maxLength: 50,
                 enableSuggestions: true,
@@ -71,7 +71,7 @@ class SearchPageState extends State<SearchPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {
-                    return SearchResultsPage(searchController.text, 0);
+                    return SearchResultsPage(_searchController.text, 0);
                   }),
                 );
               },
@@ -88,12 +88,12 @@ class SearchPageState extends State<SearchPage> {
                 children: [
                   const Text('Dark Theme'),
                   Switch(
-                    value: switchValue,
+                    value: _switchValue,
                     onChanged: (value) async {
                       final prefs = await SharedPreferences.getInstance();
                       setState(() {
-                        switchValue = value;
-                        prefs.setBool('switchValue', switchValue);
+                        _switchValue = value;
+                        prefs.setBool('switchValue', _switchValue);
                         widget.themeCallback(value
                             ? CustomTheme.darkTheme
                             : CustomTheme.lightTheme);

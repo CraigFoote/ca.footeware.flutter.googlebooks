@@ -8,10 +8,10 @@ import 'book.dart';
 import 'book_card.dart';
 
 class SearchResultsPage extends StatefulWidget {
-  const SearchResultsPage(this.searchString, this.pageNumber, {Key? key})
+  const SearchResultsPage(this._searchString, this._pageNumber, {Key? key})
       : super(key: key);
-  final String searchString;
-  final num pageNumber;
+  final String _searchString;
+  final num _pageNumber;
 
   @override
   State<StatefulWidget> createState() => SearchResultsPageState();
@@ -23,13 +23,13 @@ class SearchResultsPageState extends State<SearchResultsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            "Google Books - Search Results for '" + widget.searchString + "'"),
+            "Google Books - Search Results for '" + widget._searchString + "'"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: FutureBuilder<ListView>(
           future:
-              getSearchResults(widget.searchString, widget.pageNumber, context),
+              getSearchResults(widget._searchString, widget._pageNumber, context),
           builder: (BuildContext context, AsyncSnapshot<ListView> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
