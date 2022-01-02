@@ -40,7 +40,7 @@ class Book {
 
   String get pageCount {
     try {
-      return volumeInfo['pageCount'];
+      return volumeInfo['pageCount'].toString();
     } catch (e) {
       return 'Unknown ';
     }

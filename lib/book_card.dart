@@ -37,12 +37,15 @@ Widget getContent(Book book) {
                     book.title,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
+                      fontSize: 24.0
                     ),
                   ),
                   Text(
                     book.authors,
                     style: const TextStyle(
                       fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.0
                     ),
                   ),
                   const SizedBox(
@@ -51,11 +54,20 @@ Widget getContent(Book book) {
                   Text(
                     book.publisher,
                   ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     book.publishedDate,
                   ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     book.pageCount.toString() + ' pages',
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   SelectableText(
                     book.isbns,
