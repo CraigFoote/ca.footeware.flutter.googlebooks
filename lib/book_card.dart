@@ -6,8 +6,8 @@ class BookCard extends Card {
   BookCard(Book book, {Key? key})
       : super(
             key: key,
-            elevation: 5,
-            margin: const EdgeInsets.all(10.0),
+            elevation: 15,
+            margin: const EdgeInsets.all(10),
             child: getContent(book));
 }
 
@@ -22,7 +22,7 @@ Future<void> launchInBrowser(String url) async {
 
 Widget getContent(Book book) {
   return Padding(
-    padding: const EdgeInsets.all(20.0),
+    padding: const EdgeInsets.all(20),
     child: Column(
       children: [
         Row(
@@ -37,7 +37,7 @@ Widget getContent(Book book) {
                     book.title,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 24.0
+                      fontSize: 24,
                     ),
                   ),
                   Text(
@@ -45,7 +45,7 @@ Widget getContent(Book book) {
                     style: const TextStyle(
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.bold,
-                      fontSize: 18.0
+                      fontSize: 18,
                     ),
                   ),
                   const SizedBox(
@@ -86,7 +86,9 @@ Widget getContent(Book book) {
                     ),
                   if (book.thumbnail != 'Thumbnail not found')
                     Image(
-                      image: NetworkImage(book.thumbnail),
+                      image: NetworkImage(
+                        book.thumbnail,
+                      ),
                       alignment: Alignment.center,
                     ),
                   SelectableText(
