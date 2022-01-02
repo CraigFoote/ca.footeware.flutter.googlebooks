@@ -74,7 +74,9 @@ class SearchResultsPageState extends State<SearchResultsPage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: !_haveBooks
-            ? Container()
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
             : ListView.builder(
                 itemCount: _books.length + 1,
                 itemBuilder: (context, index) {
