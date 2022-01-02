@@ -25,6 +25,10 @@ class SearchPageState extends State<SearchPage> {
     _loadPrefs();
   }
 
+  double get screenWidth {
+    return MediaQuery.of(context).size.width;
+  }
+
   void _loadPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -56,29 +60,20 @@ class SearchPageState extends State<SearchPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: 500,
-              child: TextField(
-                controller: _searchController,
-                autofocus: true,
-                maxLength: 50,
-                enableSuggestions: true,
-              ),
-            ),
+                width: screenWidth * .7,
+                child: TextField(
+                    controller: _searchController,
+                    autofocus: true,
+                    maxLength: 50,
+                    enableSuggestions: true,
+                    onSubmitted: (value) =>
+                        sendToResults(value, 0, screenWidth))),
             ElevatedButton.icon(
               icon: const Icon(Icons.search),
               label: const Text('Search'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return SearchResultsPage(_searchController.text, 0);
-                  }),
-                );
-              },
-            ),
-          ],
+              onPressed: () => sendToResults(_searchController.text, 0, screenWidth)),
+            ],),
         ),
-      ),
       drawer: Drawer(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -131,6 +126,16 @@ class SearchPageState extends State<SearchPage> {
           ),
         ),
       ),
+    );
+  }
+
+  sendToResults(String text, int i, double screenWidth) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return SearchResultsPage(
+            _searchController.text, 0, screenWidth);
+      }),
     );
   }
 }

@@ -9,10 +9,11 @@ import 'apikey.dart';
 import 'book.dart';
 
 class SearchResultsPage extends StatefulWidget {
-  const SearchResultsPage(this._searchString, this._pageNumber, {Key? key})
+  const SearchResultsPage(this._searchString, this._pageNumber, this._screenWidth, {Key? key})
       : super(key: key);
   final String _searchString;
   final num _pageNumber;
+  final double _screenWidth;
 
   @override
   State<StatefulWidget> createState() => SearchResultsPageState();
@@ -100,7 +101,8 @@ class SearchResultsPageState extends State<SearchResultsPage> {
                               MaterialPageRoute(
                                 builder: (context) => SearchResultsPage(
                                     widget._searchString,
-                                    widget._pageNumber + 10),
+                                    widget._pageNumber + 10,
+                                    widget._screenWidth),
                               ),
                             ),
                             icon: const Icon(Icons.arrow_right),
@@ -115,7 +117,7 @@ class SearchResultsPageState extends State<SearchResultsPage> {
                       ],
                     );
                   }
-                  Card bookCard = BookCard(_books[index]);
+                  Card bookCard = BookCard(_books[index], widget._screenWidth);
                   return bookCard;
                 },
               ),
