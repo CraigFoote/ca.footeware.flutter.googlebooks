@@ -47,6 +47,7 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    namespace 'ca.footeware.google_books'
 }
 
 flutter {
