@@ -9,7 +9,9 @@ import 'apikey.dart';
 import 'book.dart';
 
 class SearchResultsPage extends StatefulWidget {
-  const SearchResultsPage(this._searchString, this._pageNumber, this._screenWidth, {Key? key})
+  const SearchResultsPage(
+      this._searchString, this._pageNumber, this._screenWidth,
+      {Key? key})
       : super(key: key);
   final String _searchString;
   final num _pageNumber;
@@ -46,7 +48,7 @@ class SearchResultsPageState extends State<SearchResultsPage> {
     final client = HttpClient();
     client.badCertificateCallback =
         (X509Certificate cert, String host, int port) => true;
-    final http = IOClient(client);
+    IOClient http = IOClient(client);
     await http.get(url).then(
       (response) async {
         if (response.statusCode == 200) {
