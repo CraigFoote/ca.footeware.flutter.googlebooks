@@ -18,6 +18,7 @@ class SearchPage extends StatefulWidget {
 class SearchPageState extends State<SearchPage> {
   bool _switchValue = false;
   final _searchController = TextEditingController();
+  bool _isDarkTheme = CustomTheme.currentTheme == CustomTheme.darkTheme;
 
   @override
   void initState() {
@@ -67,74 +68,82 @@ class SearchPageState extends State<SearchPage> {
                     maxLength: 50,
                     enableSuggestions: true,
                     onSubmitted: (value) =>
-                        sendToResults(value, 0, screenWidth))),
+                        _sendToResults(value, 0, screenWidth))),
             ElevatedButton.icon(
-              icon: const Icon(Icons.search),
-              label: const Text('Search'),
-              onPressed: () => sendToResults(_searchController.text, 0, screenWidth)),
-            ],),
+                icon: const Icon(Icons.search),
+                label: const Text('Search'),
+                onPressed: () =>
+                    _sendToResults(_searchController.text, 0, screenWidth)),
+          ],
         ),
-      drawer: Drawer(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: ListView(
-            children: [
-              Row(
-                children: [
-                  const Text('Dark Theme'),
-                  Switch(
-                    value: _switchValue,
-                    onChanged: (value) async {
-                      final prefs = await SharedPreferences.getInstance();
-                      setState(() {
-                        _switchValue = value;
-                        prefs.setBool('switchValue', _switchValue);
+      ),
+      drawer: _buildDrawer(),
+    );
+  }
+
+  Widget _buildDrawer() {
+    return Drawer(
+      child: Padding(
+        padding: const EdgeInsets.all(
+          10.0,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Text(
+                  'Dark Theme',
+                ),
+                Switch(
+                  value: _isDarkTheme,
+                  onChanged: (value) async {
+                    final prefs = await SharedPreferences.getInstance();
+                    setState(
+                      () {
+                        _isDarkTheme = value;
+                        prefs.setBool(
+                          'isDarkTheme',
+                          _isDarkTheme,
+                        );
                         widget.themeCallback(value
                             ? CustomTheme.darkTheme
                             : CustomTheme.lightTheme);
-                      });
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const InfoPage(
+                        title: 'Info',
+                      );
                     },
                   ),
-                ],
+                );
+              },
+              icon: const Icon(
+                Icons.info,
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: GestureDetector(
-                      child: Builder(
-                        builder: (context) => const Icon(
-                          Icons.info,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const InfoPage(
-                                title: 'Info',
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+              label: const Text('Info'),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  sendToResults(String text, int i, double screenWidth) {
+  _sendToResults(String text, int i, double screenWidth) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {
-        return SearchResultsPage(
-            _searchController.text, 0, screenWidth);
+        return SearchResultsPage(_searchController.text, 0, screenWidth);
       }),
     );
   }
