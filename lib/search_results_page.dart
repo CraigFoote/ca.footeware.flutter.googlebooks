@@ -43,6 +43,7 @@ class SearchResultsPageState extends State<SearchResultsPage> {
             widget._searchString +
             '&maxResults=10&startIndex=' +
             widget._pageNumber.toString() +
+            '&orderBy=newest' +
             '&key=' +
             apikey);
     final client = HttpClient();

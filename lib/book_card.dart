@@ -12,9 +12,8 @@ class BookCard extends Card {
 }
 
 Future<void> launchInBrowser(String url) async {
-  if (!await launch(
-    url,
-    forceWebView: false,
+  if (!await launchUrl(
+    Uri.parse(url),
   )) {
     throw 'Could not launch $url';
   }
