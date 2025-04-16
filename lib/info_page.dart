@@ -3,7 +3,7 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InfoPage extends StatelessWidget {
-  const InfoPage({Key? key, required this.title}) : super(key: key);
+  const InfoPage({super.key, required this.title});
   final String title;
 
   @override
